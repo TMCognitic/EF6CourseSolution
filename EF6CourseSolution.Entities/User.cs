@@ -13,5 +13,8 @@ namespace EF6CourseSolution.Entities
         public string? FirstName { get; set; }
         public string? Email { get; set; }
         public string? Passwd { get; set; }
+
+        public virtual ICollection<Task> Tasks { get; set; } = new List<Task>();
+        public virtual IEnumerable<Project> Projects { get; set; } = new List<Project>();
     }
 }

@@ -43,6 +43,26 @@ namespace EF6CourseSolution.Context.Migrations
                     b.ToTable("Project", (string)null);
                 });
 
+            modelBuilder.Entity("EF6CourseSolution.Entities.ProjectUser", b =>
+                {
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("EntryDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.HasKey("ProjectId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ProjectUser", (string)null);
+                });
+
             modelBuilder.Entity("EF6CourseSolution.Entities.Task", b =>
                 {
                     b.Property<int>("Id")
@@ -64,9 +84,26 @@ namespace EF6CourseSolution.Context.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<int?>("ParentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
+                    b.HasIndex("ParentId");
+
+                    b.HasIndex("ProjectId");
+
+                    b.HasIndex("UserId");
+
                     b.ToTable("Task", (string)null);
+
+                    b.HasCheckConstraint("CK_Task_ParentId", "(ParentId != Id)");
                 });
 
             modelBuilder.Entity("EF6CourseSolution.Entities.User", b =>
@@ -99,6 +136,57 @@ namespace EF6CourseSolution.Context.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("User", (string)null);
+                });
+
+            modelBuilder.Entity("EF6CourseSolution.Entities.ProjectUser", b =>
+                {
+                    b.HasOne("EF6CourseSolution.Entities.Project", null)
+                        .WithMany()
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("EF6CourseSolution.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("EF6CourseSolution.Entities.Task", b =>
+                {
+                    b.HasOne("EF6CourseSolution.Entities.Task", null)
+                        .WithMany("Children")
+                        .HasForeignKey("ParentId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("EF6CourseSolution.Entities.Project", null)
+                        .WithMany("Tasks")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("EF6CourseSolution.Entities.User", "User")
+                        .WithMany("Tasks")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("EF6CourseSolution.Entities.Project", b =>
+                {
+                    b.Navigation("Tasks");
+                });
+
+            modelBuilder.Entity("EF6CourseSolution.Entities.Task", b =>
+                {
+                    b.Navigation("Children");
+                });
+
+            modelBuilder.Entity("EF6CourseSolution.Entities.User", b =>
+                {
+                    b.Navigation("Tasks");
                 });
 #pragma warning restore 612, 618
         }
