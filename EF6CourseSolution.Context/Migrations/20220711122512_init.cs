@@ -89,8 +89,7 @@ namespace EF6CourseSolution.Context.Migrations
                         name: "FK_Task_Task_ParentId",
                         column: x => x.ParentId,
                         principalTable: "Task",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Task_User_UserId",
                         column: x => x.UserId,

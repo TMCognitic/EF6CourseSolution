@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EF6CourseSolution.Context.Migrations
 {
     [DbContext(typeof(ProjectContext))]
-    [Migration("20220711101434_init")]
+    [Migration("20220711122512_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -159,8 +159,7 @@ namespace EF6CourseSolution.Context.Migrations
                 {
                     b.HasOne("EF6CourseSolution.Entities.Task", null)
                         .WithMany("Children")
-                        .HasForeignKey("ParentId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("ParentId");
 
                     b.HasOne("EF6CourseSolution.Entities.Project", null)
                         .WithMany("Tasks")

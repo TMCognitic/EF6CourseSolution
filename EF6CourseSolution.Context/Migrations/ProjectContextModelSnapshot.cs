@@ -157,8 +157,7 @@ namespace EF6CourseSolution.Context.Migrations
                 {
                     b.HasOne("EF6CourseSolution.Entities.Task", null)
                         .WithMany("Children")
-                        .HasForeignKey("ParentId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("ParentId");
 
                     b.HasOne("EF6CourseSolution.Entities.Project", null)
                         .WithMany("Tasks")

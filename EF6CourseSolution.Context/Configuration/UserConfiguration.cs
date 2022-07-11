@@ -1,6 +1,7 @@
 ﻿using EF6CourseSolution.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EF6CourseSolution.Context.Configuration
 {
@@ -24,7 +25,8 @@ namespace EF6CourseSolution.Context.Configuration
 
             builder.Property(u => u.Passwd)
                 .IsRequired()
-                .HasColumnType("BINARY(64)");
+                .HasColumnType("BINARY(64)")
+                .HasConversion(new ValueConverter<string?, byte[]?>(v => v.Hash(), v => null));
         }
     }
 }
